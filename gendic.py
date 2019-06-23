@@ -27,21 +27,46 @@ for x in var:
 
 print (f'letras del alfabeto -> {len(dic)}')
 numero_de_claves = len(dic)**int(longitud)
-print(f'El numero de palabras probables es: {numero_de_claves}')
+print(f'Ultima letra del alfabeto -> {dic[len(dic)-1]}')
+print(f'El numero de palabras generadas sera -> {numero_de_claves}')
+print('===========================================')
+input("Pulsa una tecla para continuar...") 
 
 palabra ="" # esta variable contiene la nueva palabra del diccionar
 dic = list(dic)
 
 for x in range(int(longitud)):
-	palabra = palabra + dic[len(dic)-1]
+	palabra = palabra + dic[0]
 
-palabra = list(palabra)
-longitud = int(longitud)
-variador = 0
-comodin = 1
+#control de variables
+palabra = list(palabra)		#convierte palabra a lista para poder modificar sus elementos
+longitud = int(longitud)-1	#parsea longitudo para trabajarlo como entero 
+variador = 1				#controla ultimo caracter para el desplazamiento
+fin = dic[len(dic)-1]		#ultima letra del alfabeto
 
-while longitud > 0:
+def recursivo(posicion, var):	
+	pal = ''					#resultado para add al diccionario
 	for x in range(len(dic)):
-		palabra[longitud-1] = dic[x]
-		print(palabra)
-	longitud = longitud -1
+		palabra[posicion] = dic[x]
+		for y in range(len(palabra)):
+			pal = pal + str(palabra[y])
+		print(f'{pal}')
+		pal = ''
+	comprobacion(posicion, var)
+
+def comprobacion(posicion, var):
+	print(var)
+	posicion -= var
+	if posicion >= 0:
+		if palabra[posicion] != fin:
+			palabra[posicion] = dic[int(dic.index(palabra[posicion]))+1]
+			palabra[posicion+1] = dic[0]			
+			posicion += var
+			var = 1
+			recursivo(posicion, var)			
+		else:
+			posicion += var
+			var += 1
+			comprobacion(posicion, var)
+
+recursivo(longitud, variador)
