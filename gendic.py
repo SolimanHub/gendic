@@ -5,21 +5,8 @@
 var = input("Palabras a manejar -> ").lower()
 longitud = input("Longitud -> ")
 
-#diccionario = "0123456789.#$"
-"""d1 = ""
-for x in var:
-	if x != " ":
-		if diccionario.find(x) == -1:
-			d1 = d1 + x
-			pass
-		pass
-	pass
-d1 = d1 + d1.upper()
-diccionario = diccionario + d1
-
-print(f'{len(diccionario)}{" "}{diccionario}')
-"""
 dic = ""
+
 #el siguiente for crea el alfabeto, elimina letras repetidas
 for x in var:
 	if dic.find(x) == -1:
