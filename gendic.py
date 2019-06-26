@@ -1,7 +1,5 @@
-####! /bin/python
-# Generacion de un peque;o alfabeto tomando como referencia palabras con las que la victima se identifique,
+# Generacion de un pequeño alfabeto tomando como referencia palabras con las que el objetivo se identifique,
 # apellido, nombre, nombre de familiares, mascotas, lugares, gustos, etc
-import sys
 import os
 import time
 nombre = time.strftime("%d_%m_%y-%H_%M_%S") #genera el nombre que tendra el diccionario
@@ -32,11 +30,11 @@ print (f'Se generara un archivo llamado > {nombre} < que contendra el diccionari
 numero_de_claves = len(dic)**int(longitud)
 print(f'El numero de palabras generadas sera -> {numero_de_claves}')
 
-sys.setrecursionlimit(numero_de_claves) # modifica el limite de iteraciones de una funcion recursiva, limite de python 1000
 print('===========================================')
-continuar = input("Desea continuar? S/N -> ")
+continuar = input("Desea continuar? s/n -> ")
+print("Generando diccionario...")
 
-if continuar != 's':
+if continuar != 's':		#para continuar ejecucion 's' minuscula
 	print('adios...')
 	exit()
 
@@ -53,41 +51,29 @@ palabra = list(palabra)		#convierte palabra a lista para poder modificar sus ele
 longitud = int(longitud)-1	#parsea longitudo para trabajarlo como entero 
 variador = 1				#controla ultimo caracter para el desplazamiento
 fin = dic[len(dic)-1]		#ultima letra del alfabeto
+imprimir = True
 
-
-# recursivo() esta funcion toma los datos de comprobacion() y genera la palabra a partir de ellos
-# los caracteres de las palabras se van modificando de derecha a izquierda, como un sistema numerico
-# posicion indica el subindice que se modifica en la cadena
-# var el nivel de variacion
-def recursivo(posicion, var):	
-	pal = ''					#resultado para add al diccionario
-	for x in range(len(dic)):
-		palabra[posicion] = dic[x]
-		for y in range(len(palabra)):
-			pal = pal + str(palabra[y])
-		file.write(pal + os.linesep) 	# envia la palabra generada a un archivo de texto
-		pal = ''						# limpia la variable pal
-	comprobacion(posicion, var)
-
-'''
-comprobacion() se encarga de seguir el avance e iteracion a traves de los campos de la cadena
-si la cadena tiene tamaño 3, posicion comienza con el subindice 2, recordando que el conteo de subindices comienza en 0
-var "desplaza el cursor" hacia la izquierda o derecha segun corresponda.
-'''
-def comprobacion(posicion, var):
-	#print(var)
-	posicion -= var 					# baja un espacio para su analisis 
-	if posicion >= 0:					# si posicion es menor que cero termina la ejecucion
-		if palabra[posicion] != fin:	# compara el caracter en el espacio de posicion con el ultimo caracter del alfabeto
-			palabra[posicion] = dic[int(dic.index(palabra[posicion]))+1] #disminuye una posicion en la palabra y avanza un caracter en el alfabeto
-			palabra[posicion+1] = dic[0]	# empieza desde la primera posicion del alfabeto, la posicion anterior de la palabra
-			posicion += var 				# retorna posicion a su estado anterior, para generar las palabras con el nuevo caracter en posicion-1
-			var = 1							# retorna variador a 1 para hacer el barrido de hisquierda a derecha con las nuevas modificaciones.
-			recursivo(posicion, var)		# llama a recursivo para tabular las modificaciones y generar las nuevas palabras en el archivo externo.
-		else:
-			posicion += var 			# como la posicion actual llego al final del alfabeto, avanza un espacio para verificar la siguiente posicion
-			var += 1					# var -> variador, suma 1 para desplazar la posicion hacia la izquierda
-			comprobacion(posicion, var)	# se llama a si mismo para verificar las posiciones restantes, hasta encontrar un subindice de la palabra que sea diferente al final del alfabeto.
-
-recursivo(longitud, variador)
+while longitud >= 0:
+	if imprimir:
+		pal = ''					#resultado para add al diccionario
+		for x in range(len(dic)):
+			palabra[longitud] = dic[x]
+			for y in range(len(palabra)):
+				pal = pal + str(palabra[y])
+			file.write(pal + os.linesep) 	# envia la palabra generada a un archivo de texto
+			pal = ''						# limpia la variable pal
+	longitud -= variador 					# baja un espacio para su analisis 
+	if longitud == -1:
+		break
+	if palabra[longitud] != fin:	# compara el caracter en el espacio de posicion con el ultimo caracter del alfabeto
+		palabra[longitud] = dic[int(dic.index(palabra[longitud]))+1] #disminuye una posicion en la palabra y avanza un caracter en el alfabeto
+		palabra[longitud+1] = dic[0]	# empieza desde la primera posicion del alfabeto, la posicion anterior de la palabra
+		longitud += variador 				# retorna posicion a su estado anterior, para generar las palabras con el nuevo caracter en posicion-1
+		variador = 1						# retorna variador a 1 para hacer el barrido de hisquierda a derecha con las nuevas modificaciones.
+		imprimir = True
+	else:
+		longitud += variador 			# como la posicion actual llego al final del alfabeto, avanza un espacio para verificar la siguiente posicion
+		variador += 1					# var -> variador, suma 1 para desplazar la posicion hacia la izquierda
+		imprimir = False
+print("Diccionario terminado")
 file.close()
