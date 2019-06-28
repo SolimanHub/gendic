@@ -19,6 +19,7 @@ si el usuario lo desea, puede renombrar el archivo a un nombre con el que se sie
 '''
 
 var = input("Palabras a manejar -> ").lower()
+var = var + var.upper()
 longitud = input("Longitud -> ")
 
 dic = ""
@@ -28,11 +29,13 @@ for x in var:
 	if dic.find(x) == -1:
 		dic = dic + x 
 
+print(f'alfabeto -> {dic}')
 print (f'Se generara un archivo llamado > {nombre} < que contendra el diccionario')
 numero_de_claves = len(dic)**int(longitud)
+B = numero_de_claves*int(longitud)+numero_de_claves
+MB = B/1048576
 print(f'El numero de palabras generadas sera -> {numero_de_claves}')
-
-#sys.setrecursionlimit(numero_de_claves) # modifica el limite de iteraciones de una funcion recursiva, limite de python 1000
+print(f'El archivo pesara {B} B /{B/1024} kB /{MB} MB /{MB/1024} GB' )
 print('===========================================')
 continuar = input("Desea continuar? s/n -> ")
 print("Generando diccionario...")
